@@ -1,0 +1,27 @@
+SETUP
+
+1. Install virtualenv:
+
+    $ sudo easy_install virtualenv
+    
+2. Create the virtual environment:
+
+    $ virtualenv venv
+    
+3. Activate the virtual environment
+
+    $ source venv/bin/activate
+    
+4. Install all packages
+
+    $ pip install -r requirements.txt
+
+RUNNING THE SERVER
+
+1. Activate the virtual environment (if you haven't already)
+
+2. Run the server
+
+    $ python server.py runserver --host 0.0.0.0 --port 8080
+    
+3. You're done. Hit Ctrl-C to stop the server.
