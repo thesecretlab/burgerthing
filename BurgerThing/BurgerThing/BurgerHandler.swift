@@ -98,9 +98,11 @@ class BurgerHandler: NSObject {
                     completion(orderID: orderIDString, error: nil)
                     
                 } else {
+
+                    let errorString = NSString(data: data, encoding: NSUTF8StringEncoding)
                     
                     let userInfo = [NSLocalizedDescriptionKey:"Error sending burger order",
-                        NSLocalizedFailureReasonErrorKey:"Totally blame the WiFi",
+                        NSLocalizedFailureReasonErrorKey:errorString,
                         NSLocalizedRecoverySuggestionErrorKey:"Have you considered turning it on and off again?"]
                     let error = NSError(domain: BurgerThingErrorDomain, code: 1, userInfo: userInfo)
                     completion(orderID: nil, error: error)

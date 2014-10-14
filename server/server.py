@@ -50,11 +50,11 @@ def create_orders():
     
     if 'ingredients'  not in request.form:
         msg = "Invalid order: Ingredients must be specified"
-        return json.dumps({"error": msg}), 400
+        return msg, 400
         
     if len(request.form['ingredients']) == 0:
         msg = "Invalid order: Ingredients were not listed"
-        return json.dumps({"error": msg}), 400
+        return msg, 400
     
     try:
         order = Order(ingredients = request.form['ingredients'])
@@ -63,7 +63,7 @@ def create_orders():
         db.session.commit()
     except Exception:
         msg = "Invalid order!"
-        return json.dumps({"error": msg}), 400
+        return msg, 400
     
     return str(order.id)
 
