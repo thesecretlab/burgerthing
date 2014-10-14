@@ -29,3 +29,9 @@ DerivedData
 
 # virtual environment
 venv
+
+# python
+*.pyc
+
+# sqlite database
+*.sqlite
