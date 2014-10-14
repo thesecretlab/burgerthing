@@ -48,12 +48,8 @@ def list_orders():
 @app.route('/orders/new', methods=['POST'])
 def create_orders():
     
-    if 'ingredients'  not in request.form:
-        msg = "Invalid order: Ingredients must be specified"
-        return msg, 400
-        
-    if len(request.form['ingredients']) == 0:
-        msg = "Invalid order: Ingredients were not listed"
+    if 'ingredients'  not in request.form or len(request.form['ingredients']) == 0:
+        msg = "Invalid order: No ingredients provided"
         return msg, 400
     
     try:
