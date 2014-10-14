@@ -80,6 +80,9 @@
                                 <state key="normal" title="Order Burger">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="orderBurger:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="usN-pg-lbD"/>
+                                </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Gra-pI-N9m">
                                 <rect key="frame" x="0.0" y="133" width="600" height="345"/>

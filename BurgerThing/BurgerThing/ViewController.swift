@@ -55,6 +55,25 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         let indexPath = NSIndexPath(forRow: self.myBurger!.endIndex - 1, inSection: 0)
         self.tableview.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
     }
+    @IBAction func orderBurger(sender: AnyObject) {
+        if let burgerIngredients = self.myBurger
+        {
+            self.burgerHandler .orderBurger(ingredients: burgerIngredients) { (orderID, error) -> () in
+                if let orderNumber = orderID
+                {
+                    let alert = UIAlertController(title: "Burger Ordered", message: "You burger was successfully ordered, your order number is \(orderNumber)", preferredStyle: UIAlertControllerStyle.Alert)
+                    let dismissAction = UIAlertAction(title: "Got it", style: UIAlertActionStyle.Cancel, handler: nil)
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+                else
+                {
+                    let alert = UIAlertController(title: "Order Failed", message: "Your order failed, \(error?.localizedDescription)", preferredStyle: UIAlertControllerStyle.Alert)
+                    let dismissAction = UIAlertAction(title: "Bummer", style: UIAlertActionStyle.Cancel, handler: nil)
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+            }
+        }
+    }
     
     func updateBurgerItemLabel()
     {
