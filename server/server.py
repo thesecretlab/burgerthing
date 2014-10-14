@@ -49,11 +49,11 @@ def list_orders():
 def create_orders():
     
     if 'ingredients'  not in request.form:
-        msg = "Invalid order!"
+        msg = "Invalid order: Ingredients must be specified"
         return json.dumps({"error": msg}), 400
         
     if len(request.form['ingredients']) == 0:
-        msg = "Invalid order!"
+        msg = "Invalid order: Ingredients were not listed"
         return json.dumps({"error": msg}), 400
     
     try:
