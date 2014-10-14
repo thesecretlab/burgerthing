@@ -65,7 +65,7 @@ class BurgerHandler: NSObject {
 
     var ingredientsList : [String] {
         get {
-            return ["Meat", "Cheese", "Tomato", "Jalapeño", "Other stuff"]
+            return ["Beef Patty", "Bean Patty", "Cheese", "Tomato", "Lettuce", "Jalapeño", "Gluten free"]
         }
     }
     
