@@ -50,9 +50,11 @@ class BurgerHandler: NSObject {
         let window = UIApplication.sharedApplication().keyWindow
         window.rootViewController?.presentViewController(alert, animated: true, completion: nil)
     }
-    func ingredientsList()->[String]
-    {
-        return ["Meat","Cheese","Tomato","Jalapeño","Other stuff"]
+
+    var ingredientsList : [String] {
+        get {
+            return ["Meat", "Cheese", "Tomato", "Jalapeño", "Other stuff"]
+        }
     }
     
     func fallbackBurger(completion: BurgerCompletionHandler)
