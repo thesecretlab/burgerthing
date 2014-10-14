@@ -9,13 +9,11 @@
     
     <table class="table">
         <th>ID</th>
-        <th>Name</th>
         <th>Ingredients</th>
         <th>Actions</th>
         {% for order in orders %}
         <tr>
             <td>{{ order.id }}</td>
-            <td>{{ order.name }}</td>
             <td>{{ order.ingredients }}</td>
             <td><a href="{{ url_for('remove_order', order_id=order.id) }}">Delete</a></td>
         </tr>

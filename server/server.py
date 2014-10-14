@@ -35,11 +35,10 @@ class Ingredient(db.Model):
 class Order(db.Model):
     __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64) , unique=False)
     ingredients = db.Column(db.String(256), unique=False)
 
     def __repr__(self):
-        return '<Order %r (%r)>' % (self.name, self.ingredients)
+        return '<Order %r (%r)>' % (self.id, self.ingredients)
         
 @app.route('/')
 def list_orders():
@@ -49,16 +48,24 @@ def list_orders():
 @app.route('/orders/new', methods=['POST'])
 def create_orders():
     
+    if 'ingredients'  not in request.form:
+        msg = "Invalid order!"
+        return json.dumps({"error": msg}), 400
+        
+    if len(request.form['ingredients']) == 0:
+        msg = "Invalid order!"
+        return json.dumps({"error": msg}), 400
+    
     try:
-        order = Order(name = request.form['name'], 
-                      ingredients = request.form['ingredients'])
+        order = Order(ingredients = request.form['ingredients'])
+        
         db.session.add(order)
         db.session.commit()
     except Exception:
         msg = "Invalid order!"
         return json.dumps({"error": msg}), 400
     
-    return json.dumps({"name":order.name, "ingredients":order.ingredients})
+    return str(order.id)
 
 @app.route('/orders/delete/<order_id>')
 def remove_order(order_id):
@@ -83,7 +90,7 @@ def list_orders_json():
     
     for order in orders:
         d = {
-            "name": order.name,
+            "id": order.id,
             "ingredients": order.ingredients
         }
         json_orders.append(d)
