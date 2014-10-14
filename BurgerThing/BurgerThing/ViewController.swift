@@ -63,12 +63,14 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
                 {
                     let alert = UIAlertController(title: "Burger Ordered", message: "You burger was successfully ordered, your order number is \(orderNumber)", preferredStyle: UIAlertControllerStyle.Alert)
                     let dismissAction = UIAlertAction(title: "Got it", style: UIAlertActionStyle.Cancel, handler: nil)
+                    alert.addAction(dismissAction)
                     self.presentViewController(alert, animated: true, completion: nil)
                 }
                 else
                 {
                     let alert = UIAlertController(title: "Order Failed", message: "Your order failed, \(error?.localizedDescription)", preferredStyle: UIAlertControllerStyle.Alert)
                     let dismissAction = UIAlertAction(title: "Bummer", style: UIAlertActionStyle.Cancel, handler: nil)
+                    alert.addAction(dismissAction)
                     self.presentViewController(alert, animated: true, completion: nil)
                 }
             }
