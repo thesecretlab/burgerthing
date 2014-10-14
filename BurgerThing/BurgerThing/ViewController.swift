@@ -66,12 +66,14 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
                     alert.addAction(dismissAction)
                     self.presentViewController(alert, animated: true, completion: nil)
                 }
-                else
+                else if error != nil
                 {
                     let alert = UIAlertController(title: "Order Failed", message: "Your order failed, \(error?.localizedDescription)", preferredStyle: UIAlertControllerStyle.Alert)
                     let dismissAction = UIAlertAction(title: "Bummer", style: UIAlertActionStyle.Cancel, handler: nil)
                     alert.addAction(dismissAction)
                     self.presentViewController(alert, animated: true, completion: nil)
+                } else {
+                    // User cancelled; do nothing
                 }
             }
         }
