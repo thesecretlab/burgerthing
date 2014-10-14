@@ -17,6 +17,8 @@ typealias BurgerCompletionHandler = (orderID: String?, error:NSError?)->()
 class BurgerHandler: NSObject {
     
     var baseURL = NSURL(string: "http://Normandy.local:8080")
+
+    var testMode = false
     
     var newOrderURL : NSURL {
         get {
@@ -31,7 +33,10 @@ class BurgerHandler: NSObject {
     
     func orderBurger(#ingredients:[String], completion:BurgerCompletionHandler)
     {
-        let alert = UIAlertController(title: "Confirm Burger", message: "Your burger is \(ingredients)", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        let testString = self.testMode ? "[TEST MODE] " : ""
+        
+        let alert = UIAlertController(title: "Confirm Burger", message: "\(testString)Your burger is \(ingredients)", preferredStyle: UIAlertControllerStyle.Alert)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
         { (action) -> Void in
@@ -41,6 +46,13 @@ class BurgerHandler: NSObject {
         
         let orderAction = UIAlertAction(title: "Order Burger!", style: UIAlertActionStyle.Default)
         { (action) -> Void in
+            
+            if self.testMode == true {
+                // If we're testing, immediately send back a success, but with a fake order number
+                completion(orderID: "TEST", error: nil)
+                return
+            }
+            
             self.sendOrder(ingredients: ingredients, completion: completion)
         }
         
@@ -56,6 +68,7 @@ class BurgerHandler: NSObject {
             return ["Meat", "Cheese", "Tomato", "Jalapeño", "Other stuff"]
         }
     }
+    
     
     func fallbackBurger(completion: BurgerCompletionHandler)
     {
