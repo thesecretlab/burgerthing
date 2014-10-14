@@ -10,36 +10,38 @@ import UIKit
 
 private let _sharedHandler = BurgerHandler()
 
+let BurgerThingErrorDomain = "BurgerThingError"
+
+typealias BurgerCompletionHandler = (orderID: String?, error:NSError?)->()
+
 class BurgerHandler: NSObject {
     
-    var serverWorked:Bool = true
+    var baseURL = NSURL(string: "http://Normandy.local:8080")
+    
+    var newOrderURL : NSURL {
+        get {
+            return NSURL(string: "/orders/new", relativeToURL: self.baseURL)
+        }
+    }
     
     class var sharedHandler : BurgerHandler
     {
         return _sharedHandler
     }
     
-    func orderBurger(#ingredients:[String], completion:(error:NSError?)->())
+    func orderBurger(#ingredients:[String], completion:BurgerCompletionHandler)
     {
         let alert = UIAlertController(title: "Confirm Burger", message: "Your burger is \(ingredients)", preferredStyle: UIAlertControllerStyle.Alert)
         
         let cancelAction = UIAlertAction(title: "Cancel Burger", style: UIAlertActionStyle.Cancel)
         { (action) -> Void in
             // do nothing really, I guess return a nil completion handler
-            completion(error: nil)
+            completion(orderID: nil, error: nil)
         }
         
         let orderAction = UIAlertAction(title: "Order Burger!", style: UIAlertActionStyle.Default)
         { (action) -> Void in
-            // send the order off to the server
-            if self.serverWorked
-            {
-                completion(error: nil)
-            }
-            else
-            {
-                self.sendOrder(ingredients: ingredients, completion: completion)
-            }
+            self.sendOrder(ingredients: ingredients, completion: completion)
         }
         
         alert.addAction(cancelAction)
@@ -52,27 +54,75 @@ class BurgerHandler: NSObject {
     {
         return ["Meat","Cheese","Tomato","Jalapeño","Other stuff"]
     }
-    func fallbackBurger(completion:(error:NSError?)->())
+    
+    func fallbackBurger(completion: BurgerCompletionHandler)
     {
         // send an order to the server for a cheeseburger
         self.sendOrder(ingredients: ["Cheese","Meat","Onions"], completion: completion)
     }
     
-    private func sendOrder(#ingredients:[String],completion:(error:NSError?)->())
+    func sendOrder(#ingredients:[String],completion:BurgerCompletionHandler)
     {
-        // actually do the server stuff here
-        if self.serverWorked
-        {
-            completion(error: nil)
+        
+        
+        let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
+        let session = NSURLSession(configuration: sessionConfiguration)
+        
+        let url = self.newOrderURL
+        
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        
+        let ingredients_list = ", ".join(ingredients)
+        let data_string = "ingredients=\(ingredients_list)"
+        
+        request.HTTPBody = data_string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+        
+        let postTask = session.dataTaskWithRequest(request) { (data: NSData!, response : NSURLResponse!, error: NSError!) -> Void in
+            
+            // If there was an error communicating with the server, pass that error back
+            if error != nil {
+                completion(orderID: nil, error: error)
+                return
+            }
+            
+            // This should come back as an HTTP response
+            
+            if let HTTPResponse = response as? NSHTTPURLResponse {
+                
+                
+                if HTTPResponse.statusCode == 200 {
+                    
+                    let orderIDString = NSString(data: data, encoding: NSUTF8StringEncoding)
+                    
+                    completion(orderID: orderIDString, error: nil)
+                    
+                } else {
+                    
+                    let userInfo = [NSLocalizedDescriptionKey:"Error sending burger order",
+                        NSLocalizedFailureReasonErrorKey:"Totally blame the WiFi",
+                        NSLocalizedRecoverySuggestionErrorKey:"Have you considered turning it on and off again?"]
+                    let error = NSError(domain: BurgerThingErrorDomain, code: 1, userInfo: userInfo)
+                    completion(orderID: nil, error: error)
+                    
+                }
+                
+            } else {
+                
+                let userInfo = [NSLocalizedDescriptionKey:"Error contacting server",
+                    NSLocalizedFailureReasonErrorKey:"Response was not an HTTP response!",
+                    NSLocalizedRecoverySuggestionErrorKey:"Contact the admin!"]
+                let error = NSError(domain: BurgerThingErrorDomain, code: 2, userInfo: userInfo)
+                
+                completion(orderID: nil, error: error)
+                
+            }
+            
+            
         }
-        else
-        {
-            let userInfo = [NSLocalizedDescriptionKey:"Something went wrong sending the burger order",
-                NSLocalizedFailureReasonErrorKey:"Totally blame the WiFi",
-                NSLocalizedRecoverySuggestionErrorKey:"Have you considered turning it on and off again?"]
-            let error = NSError(domain: "Server Issue", code: 1, userInfo: userInfo)
-            completion(error: error)
-        }
+        
+        postTask.resume()
+        
     }
    
 }

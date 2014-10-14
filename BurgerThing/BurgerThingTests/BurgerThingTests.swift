@@ -18,35 +18,39 @@ class BurgerThingTests: XCTestCase {
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        BurgerHandler.sharedHandler.serverWorked = true
         super.tearDown()
-    }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
-        //need to test 
     }
     
     func testOrderBurger()
     {
-        BurgerHandler.sharedHandler.orderBurger(ingredients: ["Meat","Cheese","Relish"]) { (error) -> () in
-            XCTAssertNil(error, "Burger was ordered successfully")
+        
+        let expectation = expectationWithDescription("Order burger")
+        
+        BurgerHandler.sharedHandler.sendOrder(ingredients: ["Meat","Cheese","Relish"]) { (orderID, error) -> () in
+            XCTAssertNotNil(orderID, "Order ID should not be nil")
+            XCTAssertNil(error, "Error ordering burger: \(error)")
+            
+            expectation.fulfill()
         }
-    }
-    func testOrderBurgerFailure()
-    {
-        BurgerHandler.sharedHandler.serverWorked = false
-        BurgerHandler.sharedHandler.orderBurger(ingredients: ["Meat","Cheese","Relish"]) { (error) -> () in
-            XCTAssertNotNil(error != nil, "Burger order failed:\(error?.localizedDescription)")
-        }
+        
+        self.waitForExpectationsWithTimeout(2.0, nil)
+        
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock() {
-            // Put the code you want to measure the time of here.
+    func testOrderBurgerFailure()
+    {
+        
+        let expectation = expectationWithDescription("Order burger")
+        
+        BurgerHandler.sharedHandler.sendOrder(ingredients: []) { (orderID, error) -> () in
+            XCTAssertNotNil(error, "Expected an error")
+            
+            expectation.fulfill()
         }
+        
+        self.waitForExpectationsWithTimeout(2.0, handler: nil)
+
     }
+    
     
 }
