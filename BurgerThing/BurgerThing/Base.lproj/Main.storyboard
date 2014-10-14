@@ -130,7 +130,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Burger Thing" id="sb2-Ea-Dvc"/>
                     <connections>
-                        <outlet property="burgerItem" destination="Sus-oX-vZ7" id="2Zj-Kl-V7n"/>
+                        <outlet property="burgerItemLabel" destination="Sus-oX-vZ7" id="LPx-EX-Dab"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

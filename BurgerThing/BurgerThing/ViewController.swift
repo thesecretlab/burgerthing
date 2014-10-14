@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var burgerItem: UILabel!
+    @IBOutlet weak var burgerItemLabel: UILabel!
     var currentBurgerItem : Int = 0
     
     override func viewDidLoad() {
