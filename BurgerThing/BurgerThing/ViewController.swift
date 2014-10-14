@@ -84,14 +84,17 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         BurgerHandler.sharedHandler.orderBurger(ingredients: self.currentBurgerIngredients) { (orderID, error) -> () in
             if let orderNumber = orderID
             {
-                let alert = UIAlertController(title: "Burger Ordered", message: "You burger was successfully ordered, your order number is \(orderNumber)", preferredStyle: UIAlertControllerStyle.Alert)
+                let alert = UIAlertController(title: "Burger Ordered", message: "You burger was successfully ordered! Your order number is \(orderNumber)", preferredStyle: UIAlertControllerStyle.Alert)
                 let dismissAction = UIAlertAction(title: "Got it", style: UIAlertActionStyle.Cancel, handler: nil)
                 alert.addAction(dismissAction)
                 self.presentViewController(alert, animated: true, completion: nil)
             }
             else if error != nil
             {
-                let alert = UIAlertController(title: "Order Failed", message: "Your order failed, \(error?.localizedDescription)", preferredStyle: UIAlertControllerStyle.Alert)
+                
+                let failureReason = error!.localizedFailureReason!
+                
+                let alert = UIAlertController(title: "Order Failed", message: "Your order failed! \(failureReason)", preferredStyle: UIAlertControllerStyle.Alert)
                 let dismissAction = UIAlertAction(title: "Bummer", style: UIAlertActionStyle.Cancel, handler: nil)
                 alert.addAction(dismissAction)
                 self.presentViewController(alert, animated: true, completion: nil)
