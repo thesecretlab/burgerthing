@@ -11,16 +11,16 @@ import UIKit
 class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
 
     // The currently selected ingredient
-    @IBOutlet weak var burgerItemLabel: UILabel!
+    @IBOutlet weak var currentBurgerItemLabel: UILabel!
     
     // The table view that we're showing burger ingredients in
     @IBOutlet weak var tableview: UITableView!
 
     // The index of the currently selected burger ingredient
-    var currentBurgerItem : Int = 0
+    var currentBurgerItemIndex : Int = 0
     
     // The current burger: an array of ingredients. Starts as an empty array.
-    var currentBurgerIngredients : [String] = []
+    var burgerIngredients : [String] = []
     
     //MARK: - View setup
     
@@ -37,10 +37,10 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     // Select the previous ingredient
     @IBAction func previousItem(sender: AnyObject) {
         // move onto the previous item in the list of burger items
-        self.currentBurgerItem--
+        self.currentBurgerItemIndex--
         
-        if self.currentBurgerItem < 0 {
-            self.currentBurgerItem += BurgerHandler.sharedHandler.ingredientsList.count
+        if self.currentBurgerItemIndex < 0 {
+            self.currentBurgerItemIndex += BurgerHandler.sharedHandler.ingredientsList.count
         }
         
         self.updateBurgerItemLabel()
@@ -49,17 +49,17 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     // Select the next ingredient
     @IBAction func nextItem(sender: AnyObject) {
         // move onto the next item in the list of burger items
-        self.currentBurgerItem++
-        self.currentBurgerItem = self.currentBurgerItem % BurgerHandler.sharedHandler.ingredientsList.count
+        self.currentBurgerItemIndex++
+        self.currentBurgerItemIndex = self.currentBurgerItemIndex % BurgerHandler.sharedHandler.ingredientsList.count
         self.updateBurgerItemLabel()
     }
     
     // Update the main label so that it shows the name of the selected ingredient
     func updateBurgerItemLabel()
     {
-        let currentIngredient = BurgerHandler.sharedHandler.ingredientsList[self.currentBurgerItem]
+        let currentIngredient = BurgerHandler.sharedHandler.ingredientsList[self.currentBurgerItemIndex]
         
-        self.burgerItemLabel.text = currentIngredient
+        self.currentBurgerItemLabel.text = currentIngredient
     }
     
     //MARK: - Burger ordering
@@ -68,12 +68,12 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     @IBAction func addBurgerItem(sender: AnyObject) {
         // add the current burger Item into the array of burger Items
         
-        let theIngredient = BurgerHandler.sharedHandler.ingredientsList[self.currentBurgerItem]
+        let theIngredient = BurgerHandler.sharedHandler.ingredientsList[self.currentBurgerItemIndex]
         
-        self.currentBurgerIngredients.append(theIngredient)
+        self.burgerIngredients.append(theIngredient)
         
         // update the tableview
-        let indexPath = NSIndexPath(forRow: self.currentBurgerIngredients.endIndex - 1, inSection: 0)
+        let indexPath = NSIndexPath(forRow: self.burgerIngredients.endIndex - 1, inSection: 0)
         
         self.tableview.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
     }
@@ -81,13 +81,15 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     // Ask for a burger!
     @IBAction func orderBurger(sender: AnyObject) {
         
-        BurgerHandler.sharedHandler.orderBurger(ingredients: self.currentBurgerIngredients) { (orderID, error) -> () in
+        BurgerHandler.sharedHandler.orderBurger(ingredients: self.burgerIngredients) { (orderID, error) -> () in
             if let orderNumber = orderID
             {
                 let alert = UIAlertController(title: "Burger Ordered", message: "You burger was successfully ordered! Your order number is \(orderNumber)", preferredStyle: UIAlertControllerStyle.Alert)
                 let dismissAction = UIAlertAction(title: "Got it", style: UIAlertActionStyle.Cancel, handler: nil)
                 alert.addAction(dismissAction)
                 self.presentViewController(alert, animated: true, completion: nil)
+                
+                
             }
             else if error != nil
             {
@@ -116,14 +118,14 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return self.currentBurgerIngredients.count
+        return self.burgerIngredients.count
         
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("burgerIngredientCell") as UITableViewCell
         
-        cell.textLabel?.text = self.currentBurgerIngredients[indexPath.row]
+        cell.textLabel?.text = self.burgerIngredients[indexPath.row]
         
         return cell
     }
@@ -133,12 +135,11 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true;
     }
-    
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete
         {
             // remove the item from the array
-            self.currentBurgerIngredients.removeAtIndex(indexPath.row)
+            self.burgerIngredients.removeAtIndex(indexPath.row)
             
             // update the tableview
             self.tableview.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
