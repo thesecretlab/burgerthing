@@ -33,7 +33,11 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     @IBAction func previousItem(sender: AnyObject) {
         // move onto the previous item in the list of burger items
         self.currentBurgerItem--
-        self.currentBurgerItem = self.currentBurgerItem % self.possibleIngredients.count
+        
+        if self.currentBurgerItem < 0 {
+            self.currentBurgerItem += self.possibleIngredients.count
+        }
+        
         self.updateBurgerItemLabel()
     }
     @IBAction func nextItem(sender: AnyObject) {
