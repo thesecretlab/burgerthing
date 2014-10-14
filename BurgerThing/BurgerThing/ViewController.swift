@@ -16,7 +16,9 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     var currentBurgerItem : Int = 0
     let burgerHandler = BurgerHandler.sharedHandler
     let possibleIngredients = BurgerHandler.sharedHandler.ingredientsList()
-    var myBurger : [String]?
+    
+    // The current burger: an array of ingredients. Starts as an empty array.
+    var currentBurgerIngredients : [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,41 +44,33 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     }
     @IBAction func addBurgerItem(sender: AnyObject) {
         // add the current burger Item into the array of burger Items
-        if (self.myBurger != nil)
-        {
-            self.myBurger?.append(self.possibleIngredients[self.currentBurgerItem])
-        }
-        else
-        {
-            self.myBurger = [self.possibleIngredients[self.currentBurgerItem]]
-        }
+        self.currentBurgerIngredients.append(self.possibleIngredients[self.currentBurgerItem])
         
         // update the tableview
-        let indexPath = NSIndexPath(forRow: self.myBurger!.endIndex - 1, inSection: 0)
+        let indexPath = NSIndexPath(forRow: self.currentBurgerIngredients.endIndex - 1, inSection: 0)
         self.tableview.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
     }
     @IBAction func orderBurger(sender: AnyObject) {
-        if let burgerIngredients = self.myBurger
-        {
-            self.burgerHandler .orderBurger(ingredients: burgerIngredients) { (orderID, error) -> () in
-                if let orderNumber = orderID
-                {
-                    let alert = UIAlertController(title: "Burger Ordered", message: "You burger was successfully ordered, your order number is \(orderNumber)", preferredStyle: UIAlertControllerStyle.Alert)
-                    let dismissAction = UIAlertAction(title: "Got it", style: UIAlertActionStyle.Cancel, handler: nil)
-                    alert.addAction(dismissAction)
-                    self.presentViewController(alert, animated: true, completion: nil)
-                }
-                else if error != nil
-                {
-                    let alert = UIAlertController(title: "Order Failed", message: "Your order failed, \(error?.localizedDescription)", preferredStyle: UIAlertControllerStyle.Alert)
-                    let dismissAction = UIAlertAction(title: "Bummer", style: UIAlertActionStyle.Cancel, handler: nil)
-                    alert.addAction(dismissAction)
-                    self.presentViewController(alert, animated: true, completion: nil)
-                } else {
-                    // User cancelled; do nothing
-                }
+        
+        self.burgerHandler.orderBurger(ingredients: self.currentBurgerIngredients) { (orderID, error) -> () in
+            if let orderNumber = orderID
+            {
+                let alert = UIAlertController(title: "Burger Ordered", message: "You burger was successfully ordered, your order number is \(orderNumber)", preferredStyle: UIAlertControllerStyle.Alert)
+                let dismissAction = UIAlertAction(title: "Got it", style: UIAlertActionStyle.Cancel, handler: nil)
+                alert.addAction(dismissAction)
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+            else if error != nil
+            {
+                let alert = UIAlertController(title: "Order Failed", message: "Your order failed, \(error?.localizedDescription)", preferredStyle: UIAlertControllerStyle.Alert)
+                let dismissAction = UIAlertAction(title: "Bummer", style: UIAlertActionStyle.Cancel, handler: nil)
+                alert.addAction(dismissAction)
+                self.presentViewController(alert, animated: true, completion: nil)
+            } else {
+                // User cancelled; do nothing
             }
         }
+    
     }
     
     func updateBurgerItemLabel()
@@ -89,19 +83,14 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         return 1;
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let theBurger = self.myBurger
-        {
-            return theBurger.count
-        }
-        return 0
+        
+        return self.currentBurgerIngredients.count
+        
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("burgerIngredientCell") as UITableViewCell
         
-        if let theBurger = self.myBurger
-        {
-            cell.textLabel?.text = theBurger[indexPath.row]
-        }
+        cell.textLabel?.text = self.currentBurgerIngredients[indexPath.row]
         
         return cell
     }
@@ -114,13 +103,11 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         if editingStyle == UITableViewCellEditingStyle.Delete
         {
             // remove the item from the array
-            if (self.myBurger != nil)
-            {
-                self.myBurger?.removeAtIndex(indexPath.row)
-                
-                // update the tableview
-                self.tableview.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
-            }
+            self.currentBurgerIngredients.removeAtIndex(indexPath.row)
+            
+            // update the tableview
+            self.tableview.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Top)
+        
         }
     }
 
