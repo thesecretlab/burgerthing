@@ -33,7 +33,7 @@ class BurgerHandler: NSObject {
     {
         let alert = UIAlertController(title: "Confirm Burger", message: "Your burger is \(ingredients)", preferredStyle: UIAlertControllerStyle.Alert)
         
-        let cancelAction = UIAlertAction(title: "Cancel Burger", style: UIAlertActionStyle.Cancel)
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel)
         { (action) -> Void in
             // do nothing really, I guess return a nil completion handler
             completion(orderID: nil, error: nil)
