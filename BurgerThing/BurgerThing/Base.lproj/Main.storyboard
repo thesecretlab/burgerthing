@@ -85,7 +85,7 @@
                                 <rect key="frame" x="0.0" y="133" width="600" height="345"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="burgerItemCell" textLabel="wiS-Nh-nDx" style="IBUITableViewCellStyleDefault" id="tBk-0p-aOq">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="burgerIngredientCell" textLabel="wiS-Nh-nDx" style="IBUITableViewCellStyleDefault" id="tBk-0p-aOq">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tBk-0p-aOq" id="xMd-Lo-RD0">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -100,6 +100,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="vXZ-lx-hvc" id="lOS-Rg-Pcb"/>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="W8i-Ph-QIe"/>
+                                </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3gZ-JF-yYC">
                                 <rect key="frame" x="235" y="486" width="131" height="30"/>
@@ -131,6 +135,7 @@
                     <navigationItem key="navigationItem" title="Burger Thing" id="sb2-Ea-Dvc"/>
                     <connections>
                         <outlet property="burgerItemLabel" destination="Sus-oX-vZ7" id="LPx-EX-Dab"/>
+                        <outlet property="tableview" destination="Gra-pI-N9m" id="cln-iX-4zP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
