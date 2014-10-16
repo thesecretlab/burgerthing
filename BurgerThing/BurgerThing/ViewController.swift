@@ -28,6 +28,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.burgerIngredients = BurgerHandler.sharedHandler.baseBurger
+        
         // Make sure that the current ingredient label says something useful
         self.updateBurgerItemLabel()
     }

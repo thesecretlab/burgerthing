@@ -16,6 +16,8 @@ typealias BurgerCompletionHandler = (orderID: String?, error:NSError?)->()
 
 class BurgerHandler: NSObject {
     
+    var baseBurger = ["Beef Patty","Mustard","Onion","Cheese","Pickles"]
+    
     var baseURL = NSURL(string: "http://Normandy.local:8080")
 
     var testMode = false
@@ -29,6 +31,25 @@ class BurgerHandler: NSObject {
     class var sharedHandler : BurgerHandler
     {
         return _sharedHandler
+    }
+    
+    var ingredientsList : [String] {
+        get {
+            return [
+                "Beef Patty",
+                "Veg Patty",
+                "Cheese",
+                "Onions",
+                "Jalapeños",
+                "Bacon",
+                "Beetroot",
+                "Pickles",
+                "Mustard",
+                "Relish",
+                "Gluten Free",
+                "Side of Chips"
+            ]
+        }
     }
     
     func orderBurger(#ingredients:[String], completion:BurgerCompletionHandler)
@@ -62,33 +83,36 @@ class BurgerHandler: NSObject {
         let window = UIApplication.sharedApplication().keyWindow
         window.rootViewController?.presentViewController(alert, animated: true, completion: nil)
     }
-
-    var ingredientsList : [String] {
-        get {
-            return [
-                "Beef Patty",
-                "Bean Patty",
-                "Cheese",
-                "Tomato",
-                "Onions",
-                "Lettuce",
-                "Jalapeño",
-                "Gluten free"
-            ]
-        }
-    }
     
-    
-    func fallbackBurger(completion: BurgerCompletionHandler)
+    func fallbackBurger()
     {
         // send an order to the server for a cheeseburger
-        self.sendOrder(ingredients: ["Cheese","Meat","Onions"], completion: completion)
+        self.sendOrder(ingredients: self.baseBurger) { (orderID, error) -> () in
+            if let orderNumber = orderID
+            {
+                let alert = UIAlertController(title: "Burger Ordered", message: "You burger was successfully ordered! Your order number is \(orderNumber)", preferredStyle: UIAlertControllerStyle.Alert)
+                let dismissAction = UIAlertAction(title: "Got it", style: UIAlertActionStyle.Cancel, handler: nil)
+                alert.addAction(dismissAction)
+                
+                let window = UIApplication.sharedApplication().keyWindow
+                window.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+            }
+            else if error != nil
+            {
+                let failureReason = error!.localizedFailureReason!
+                
+                let alert = UIAlertController(title: "Order Failed", message: "Your order failed! \(failureReason)", preferredStyle: UIAlertControllerStyle.Alert)
+                let dismissAction = UIAlertAction(title: "Bummer", style: UIAlertActionStyle.Cancel, handler: nil)
+                alert.addAction(dismissAction)
+                
+                let window = UIApplication.sharedApplication().keyWindow
+                window.rootViewController?.presentViewController(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     func sendOrder(#ingredients:[String],completion:BurgerCompletionHandler)
     {
-        
-        
         let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
         let session = NSURLSession(configuration: sessionConfiguration)
         
