@@ -135,7 +135,13 @@
                             <constraint firstItem="6ff-YO-dPa" firstAttribute="centerX" secondItem="3gZ-JF-yYC" secondAttribute="centerX" id="yuL-Oh-Uem"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Burger Thing" id="sb2-Ea-Dvc"/>
+                    <navigationItem key="navigationItem" title="Burger Thing" id="sb2-Ea-Dvc">
+                        <barButtonItem key="rightBarButtonItem" title="About" id="HLt-bB-pDk">
+                            <connections>
+                                <segue destination="N9h-Q4-sG4" kind="show" id="AK2-rY-d4x"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="currentBurgerItemLabel" destination="Sus-oX-vZ7" id="ZCx-3p-5C0"/>
                         <outlet property="tableview" destination="Gra-pI-N9m" id="cln-iX-4zP"/>
@@ -144,6 +150,42 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="869" y="352"/>
+        </scene>
+        <!--About View Controller-->
+        <scene sceneID="pEw-e2-wKE">
+            <objects>
+                <viewController id="N9h-Q4-sG4" customClass="AboutViewController" customModule="BurgerThing" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Uis-OV-arH"/>
+                        <viewControllerLayoutGuide type="bottom" id="cca-Yv-q8K"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="AVx-8y-gjU">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="1JF-dA-sKG">
+                                <rect key="frame" x="16" y="72" width="568" height="58"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="58" id="FhL-jd-EYq"/>
+                                </constraints>
+                                <string key="text">This was BurgerThing!
+Thanks to Pop Cafe and Startup Tasmania</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="1JF-dA-sKG" firstAttribute="top" secondItem="Uis-OV-arH" secondAttribute="bottom" constant="8" id="2Vv-gI-XUA"/>
+                            <constraint firstItem="1JF-dA-sKG" firstAttribute="leading" secondItem="AVx-8y-gjU" secondAttribute="leadingMargin" id="agW-NG-Sb3"/>
+                            <constraint firstItem="1JF-dA-sKG" firstAttribute="trailing" secondItem="AVx-8y-gjU" secondAttribute="trailingMargin" id="iUF-fx-Ccj"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="b1c-I4-52T" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1569" y="352"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Iww-Xy-ZUM">
