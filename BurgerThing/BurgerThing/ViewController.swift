@@ -30,7 +30,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         self.burgerIngredients = BurgerHandler.sharedHandler.baseBurger
 
-        BurgerHandler.sharedHandler.testMode = true
+        BurgerHandler.sharedHandler.testMode = false
         
         // Make sure that the current ingredient label says something useful
         self.updateBurgerItemLabel()

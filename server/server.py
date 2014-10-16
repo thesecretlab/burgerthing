@@ -45,6 +45,10 @@ def list_orders():
     orders = Order.query.all()
     return render_template('orders.html', orders=orders)
     
+@app.route('/about')
+def show_about():
+    return render_template('about.html')
+    
 @app.route('/orders/new', methods=['POST'])
 def create_orders():
     
