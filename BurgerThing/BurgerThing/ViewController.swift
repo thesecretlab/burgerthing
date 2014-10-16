@@ -29,6 +29,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         super.viewDidLoad()
         
         self.burgerIngredients = BurgerHandler.sharedHandler.baseBurger
+
+        BurgerHandler.sharedHandler.testMode = true
         
         // Make sure that the current ingredient label says something useful
         self.updateBurgerItemLabel()

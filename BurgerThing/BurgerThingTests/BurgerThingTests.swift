@@ -13,6 +13,7 @@ class BurgerThingTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        BurgerHandler.sharedHandler.baseURL = NSURL(string: "http://localhost:8080")
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
