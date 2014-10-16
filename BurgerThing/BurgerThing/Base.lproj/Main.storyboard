@@ -74,6 +74,9 @@
                                 <state key="normal" title="Share My Burger">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="shareBurger:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="sUN-6u-FBi"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6ff-YO-dPa">
                                 <rect key="frame" x="256" y="524" width="89" height="30"/>

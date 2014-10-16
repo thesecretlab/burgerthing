@@ -110,9 +110,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     }
     
     
-    
     //MARK: - Table view data source methods
-    
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1;
@@ -148,6 +146,14 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         }
     }
+    
+    //MARK: - Sharing
+    
+    @IBAction func shareBurger(sender: AnyObject) {
+        let activityViewController = UIActivityViewController(activityItems: ["I created a \(self.burgerIngredients) burger at BurgerThing"], applicationActivities: nil)
+        self.presentViewController(activityViewController, animated: true, completion: nil)
+    }
+    
 
 }
 
